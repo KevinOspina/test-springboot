@@ -1,11 +1,19 @@
-# Usar una imagen base de Java 8 (OpenJDK)
-FROM --platform=linux/arm64 openjdk:8-jdk-alpine
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+WORKDIR /app
+EXPOSE 80
 
-# Argumentos opcionales para proporcionar valores como JAR_FILE durante el build de Docker
-ARG JAR_FILE=target/*.jar
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+WORKDIR /src
+COPY ["hello-world-api/hello-world-api.csproj", "./"]
+RUN dotnet restore "./hello-world-api.csproj"
+COPY . .
+WORKDIR "/src/."
+RUN dotnet build "hello-world-api.csproj" -c Release -o /app/build
 
-# Copiar el archivo JAR compilado de Spring Boot al contenedor
-COPY ${JAR_FILE} app.jar
+FROM build AS publish
+RUN dotnet publish "hello-world-api.csproj" -c Release -o /app/publish
 
-# Especificar un punto de entrada para ejecutar la aplicación Spring Boot
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "hello-world-api.dll"]

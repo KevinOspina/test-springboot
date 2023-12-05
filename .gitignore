@@ -1,17 +1,41 @@
-# Compiled class file
-*.class
+# Autosave files
+*~
 
-# Log file
-*.log
+# build
+[Oo]bj/
+[Bb]in/
+packages/
+TestResults/
 
-# Package Files
-*.jar
-*.zip
+# globs
+Makefile.in
+*.DS_Store
+*.sln.cache
+*.suo
+*.cache
+*.pidb
+*.userprefs
+*.usertasks
+config.log
+config.make
+config.status
+aclocal.m4
+install-sh
+autom4te.cache/
+*.user
 *.tar.gz
-*.rar
+tarballs/
+test-results/
+Thumbs.db
+.vs/
 
-# Generated Sources
-target
+# Mac bundle stuff
+*.dmg
+*.app
 
-# IDE Files
-.idea
+# resharper
+*_Resharper.*
+*.Resharper
+
+# dotCover
+*.dotCover
