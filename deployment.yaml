@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cafam-back-springboot
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cafam-back-springboot
+  template:
+    metadata:
+      labels:
+        app: cafam-back-springboot
+    spec:
+      containers:
+      - name: cafam-back-springboot-container
+        image: registrycafam.azurecr.io/kevinospina03/cafam-back-springboot:latest
+        ports:
+        - containerPort: 8080    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cafam-back-springboot-service
+spec:
+  selector:
+    app: cafam-back-springboot
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
